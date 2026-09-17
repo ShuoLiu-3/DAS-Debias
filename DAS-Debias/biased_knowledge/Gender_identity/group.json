@@ -1,0 +1,5 @@
+{
+    "male": ["he", "his", "him", "himself", "male", "man", "boy", "men", "dad", "father"],
+    "female": ["she", "her", "woman", "herself", "female", "girl", "women", "mom", "mother"],
+    "trans": ["transgender", "queer", "cisgender", "fluid"]
+}

@@ -1,0 +1,58 @@
+
+# -------------------- 模型与设备 --------------------
+model_name: "llama2_chat_7B"       # 模型名称，需在 code/src/utils/globals.py 的 HF_NAMES 中注册
+device: 0                           # GPU 设备编号
+
+# -------------------- 数据集与任务 --------------------
+eval_dataset_name: "BBQ"            # 评估数据集：BBQ / BiasAsker / MMLU
+eval_task: "bbq"                    # 评估任务：bbq / biasasker / mmlu
+protect_attr: "Gender_identity"     # 保护属性维度（偏见类别）
+bbq_cate: "Gender_identity"         # BBQ 子类别（通常与 protect_attr 一致）
+test_file: "Gender_identity"        # 测试文件名
+trace_file: ""                      # 激活值追踪语料路径，如 ../biased_knowledge/corpus/Gender_identity_sentences.json
+exp_suffix: ""                      # 实验后缀，用于区分不同实验
+
+# -------------------- 探针（Probe）训练 --------------------
+class_num: 3                        # 偏见分类数（维度相关，见 README）
+num_epochs: 20                      # 探针训练轮数
+val_ratio: 0.2                      # 验证集占比
+num_mlps: 12                        # 选择干预的 MLP 层数（取 F1 最高的前 N 层）
+
+# -------------------- PGD 对抗攻击 --------------------
+loss_type: "KL"                     # 损失函数类型
+noise_factor: 5                     # PGD 噪声强度系数（越大扰动越强）
+num_iter: 10                        # PGD 迭代次数
+eps_iter: 4                         # PGD 步长系数（步长 = noise_factor / eps_iter）
+
+# -------------------- Adapter 蒸馏 --------------------
+use_adapter: true                   # 是否使用 Adapter 替代 PGD 进行推理时去偏见
+distill_epochs: 50                  # Adapter 蒸馏训练轮数
+adapter_hidden_dim: 512             # Adapter 瓶颈隐藏层维度
+consistency_alpha: 0.1              # 一致性正则化系数（越大越保护原始语义，但去偏效果减弱）
+
+# -------------------- 自适应门控 --------------------
+gating_threshold: 0.2               # 门控 KL 散度阈值
+                                    #   - 值越高 → 越保守，只干预高偏见样本，保护无偏见样本
+                                    #   - 值越低 → 越激进，干预更多样本，去偏更彻底但可能过度矫正
+
+# -------------------- Steering Vector --------------------
+use_steering: true                  # 是否启用对比激活导向
+steering_alpha: 0.02                # 导向向量强度系数
+                                    #   - 值越大 → 偏见方向去除越强
+                                    #   - 值过大 → 可能破坏语义，建议 0.01 ~ 0.2
+
+# -------------------- 各维度推荐超参 --------------------
+# 不同偏见维度的偏见强度和特性不同，建议使用异质化超参
+# 以下为参考值，可根据实验结果微调
+#
+# | 偏见维度            | class_num | noise_factor | gating_threshold | steering_alpha |
+# |---------------------|-----------|--------------|------------------|----------------|
+# | Age                 | 2         | 4            | 0.05             | 0.2            |
+# | Disability_status   | 2         | 3            | 0.05             | 0.2            |
+# | Gender_identity     | 3         | 5            | 0.05             | 0.2            |
+# | Nationality         | 6         | 4            | 0.10             | 0.2            |
+# | Physical_appearance | 2         | 6            | 0.15             | 0.1            |
+# | Race_ethnicity      | 9         | 8            | 0.05             | 0.2            |
+# | Religion            | 11        | 7            | 0.20             | 0.0            |
+# | SES                 | 2         | 9            | 0.15             | 0.1            |
+# | Sexual_orientation  | 5         | 6            | 0.05             | 0.2            |

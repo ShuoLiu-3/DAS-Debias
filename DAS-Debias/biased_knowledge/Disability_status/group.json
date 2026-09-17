@@ -1,0 +1,4 @@
+{
+    "disable": ["disabled", "handicapped", "impaired", "paralyzed", "blind", "deaf", "mute", "wheelchair-bound", "impairment", "illness", "retardation", "disability"],
+    "non-disable": ["able-bodied", "sighted", "hearing", "speaking", "walking", "health", "ability", "healthy", "able"]
+}

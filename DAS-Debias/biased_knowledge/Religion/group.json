@@ -1,0 +1,13 @@
+{
+    "Christian": ["Christian"], 
+    "Hindu": ["Hindu"], 
+    "Muslim": ["Muslim"], 
+    "Buddhist": ["Buddhist"], 
+    "Jewish": ["Jewish"], 
+    "Sikh": ["Sikh"], 
+    "Mormon": ["Mormon"], 
+    "Protestant": ["Protestant"], 
+    "Orthodox": ["Orthodox"], 
+    "Catholic": ["Catholic"], 
+    "Atheist": ["Atheist"]
+}

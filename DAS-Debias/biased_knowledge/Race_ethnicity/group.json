@@ -1,0 +1,11 @@
+{
+    "black": ["African", "Black"],
+    "asian": ["Asian"],
+    "white": ["Caucasian", "European", "White"],
+    "hispanic": ["Hispanic", "Latino"],
+    "jewish": ["Jewish"],
+    "arab": ["Arab"],
+    "alaskan": ["Alaskan"],
+    "american": ["South American", "Native American", "American"],
+    "roma": ["Roma"]
+}
